@@ -1,4 +1,4 @@
-# NESFCDrifterArchive
+# NEFSCDrifterArchive
 
 NEFSC Drifter Archive: comparison with FVCOM
 
