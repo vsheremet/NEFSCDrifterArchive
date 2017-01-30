@@ -26,6 +26,11 @@ print('All fixes:'+str(len(D['id'])))
 IDs = list(set(D['id']))
 print('All tracks, unique drifter IDs:' + str(len(IDs)))
 
+# Just one drifter
+IDs=[100390731]
+IDs=[118440672]
+print('Selected track, drifter ID:' + str(IDs))
+
 #t0=datetime.strptime('1990-01-01T00:00:00Z','%Y-%m-%dT%H:%M:%S.%f')
 t0=datetime.strptime('1990-01-01T00:00:00Z','%Y-%m-%dT%H:%M:%SZ')
 
@@ -41,7 +46,7 @@ while k in range(len(IDs)):
     lon=D['longitude'][i]
     lat=D['latitude'][i]
     t = np.array([datetime.strptime(T[kt],'%Y-%m-%dT%H:%M:%SZ') for kt in range(len(T))]) # datetime
-#    tp = np.array([(t[kt]-t0).total_seconds()/60/60/24. for kt in range(len(t))]) 
+#    tp = np.array([(t[kt]-t0).total_seconds()/(60*60*24.) for kt in range(len(t))]) 
 
     plt.figure(1)    
     plt.title(str(ID))
@@ -75,8 +80,11 @@ while k in range(len(IDs)):
     plt.grid(True)
     plt.show()
     
+    A=1./np.cos(lat.mean()*np.pi/180.) # axes aspect ratio
     plt.figure(3)
     plt.plot(lon,lat,'r.-',lon[0],lat[0],'go',lon[-1],lat[-1],'b*')
+    ax=plt.gca
+    plt.axes().set_aspect(A)
     plt.xlabel('lon')
     plt.ylabel('lat')
     plt.title(ID)
@@ -85,11 +93,13 @@ while k in range(len(IDs)):
     
 
     print(str(k)+'  '+str(ID))
-    print('Enter: b - step 1 back, # [0:'+str(len(IDs)-1)+'] - go to #, anything else - step 1 forward')    
+    print('Enter: b - step 1 back, # [0:'+str(len(IDs)-1)+'] - go to #,q - quit, anything else - step 1 forward')    
     a=raw_input()
     
     if a=='b':
         k=k-1  # step back
+    elif a=='q':
+        break
     else:
         try:
             k=int(a)
@@ -99,4 +109,5 @@ while k in range(len(IDs)):
     plt.close(1)
     plt.close(2)
     plt.close(3)
+
 
